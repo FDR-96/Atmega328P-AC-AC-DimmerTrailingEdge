@@ -6,7 +6,6 @@
  */
 
 #define __DELAY_BACKWARD_COMPATIBLE__
-#include <xc.h>
 #define F_CPU 16000000
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -17,9 +16,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "libs/USARTAtmega328P.h"
-unsigned char Tx;
+#include "libs/../MAX7219SPI.h"
+#include <xc.h>
+// Outputs, pin definitions
+#define PIN_SCK                   PORTB5
+#define PIN_MOSI                  PORTB3
+#define PIN_SS                    PORTB2
+
+
+unsigned char Tx, Rx;
 unsigned char data[3];
 unsigned char _char_dimmer[1];
+int number = 10;
 float dimmer = 0.0f;
 float trueRms;
 int i = 2;
@@ -30,7 +38,7 @@ float duty, tiempo;
 bool encender = false;
 bool bandera = false;
 bool local = true;
-
+char digitsInUsed = 8;
 
 volatile unsigned int riseTime = 0; // time when rising edge takes place
 volatile unsigned int fallTime = 0; // time when falling edge takes place
@@ -43,38 +51,54 @@ int main(void) {
     PCINT_init();
     ADC_init();
     USART_init();
- 
-      //Set Initial Timer value
-  TCNT1 = 0;
-  //First capture on rising edge
-  TCCR1B |= (1 << ICES1);
-  //Enable input capture and overflow interrupts
-  TIMSK1 |= (1 << ICIE1) | (1 << TOIE1);
-  //Start timer without prescaler
-  TCCR1B |= (1 << CS10);
-  //Enable global interrutps
-    
-    
-    
-    DDRD |= (1<<DDD4);
-    sei();
-    while (1) 
-    {
 
-       range = 0; // reset range
+    //Set Initial Timer value
+    TCNT1 = 0;
+    //First capture on rising edge
+    TCCR1B |= (1 << ICES1);
+    //Enable input capture and overflow interrupts
+    TIMSK1 |= (1 << ICIE1) | (1 << TOIE1);
+     //Start timer without prescaler
+    TCCR1B |= (1 << CS10);
+
+  
+    DDRB |= (1 << PIN_SCK) | (1 << PIN_MOSI) | (1 << PIN_SS);
+
+
+    SPCR |= (1 << SPE) | (1 << MSTR)| (1<<SPR1);
+
+
+    MAX7219_writeData(MAX7219_MODE_DECODE, 0xFF);
+
+
+    MAX7219_writeData(MAX7219_MODE_SCAN_LIMIT, digitsInUsed - 1);
+    MAX7219_writeData(MAX7219_MODE_INTENSITY, 3);
+    MAX7219_writeData(MAX7219_MODE_POWER, ON);
+    sei();
+
+        
+    while (1) 
+    {    
+
+
+        MAX7219_displayNumber(number);
+        _delay_ms(10);
+        range = 0; // reset range
 		pulseWidth = 0; // reset pulsewidth to 0.
 		riseTime = 0;	//reset risetime to 0
 		fallTime = 0; // reset falltime to 0
+    
+        
         
         TCCR1B = (1 << CS00); // use clock frequency as-is
 
         pulseWidth = fallTime - riseTime; // calculate pulsewidth in timer ticks - 1 tick = 1us
-		range = ((pulseWidth/1000000));
+        range = ((pulseWidth/1000000));
         
-         USART_SetData('s'); 
-        
+
+     
       trueRms = ADC_GetData(0)*24.0f/1024.0f;
-      switch(USART_GetData())
+      switch(Rx)
         {
             case 'V':
                 _temp = trueRms / 100;
@@ -145,5 +169,6 @@ ISR(TIMER1_CAPT_vect) {
 }
 ISR(USART_RX_vect)
 {
-	USART_GetData();
+ USART_GetData();
+    
 }

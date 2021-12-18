@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=Atmega328P-AC&AC-DimmerTrailingEdge.X
+PROJECTNAME=Atmega328P-AC-AC-DimmerTrailingEdge
 
 # Active Configuration
 DEFAULTCONF=default

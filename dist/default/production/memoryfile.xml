@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <project>                                  
-  <executable name="dist/default/production/Atmega328P-AC_AC-DimmerTrailingEdge.X.production.elf">                 
+  <executable name="dist/default/production/Atmega328P-AC-AC-DimmerTrailingEdge.production.elf">                 
     <memory name="program">              
       <units>bytes</units>                 
       <length>32768</length>                 
-      <used>3006</used>                     
-      <free>29762</free>                     
+      <used>3351</used>                     
+      <free>29417</free>                     
     </memory>                              
     <memory name="data">                 
       <units>bytes</units>                 
       <length>2048</length>                 
-      <used>37</used>                     
-      <free>2011</free>                     
+      <used>42</used>                     
+      <free>2006</free>                     
     </memory>                              
   </executable>                            
 </project>                                 

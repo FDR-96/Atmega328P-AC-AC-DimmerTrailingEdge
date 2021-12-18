@@ -54,6 +54,7 @@ Common symbol       size              file
 
 _char_dimmer        0x1               build/default/production/main.o
 tiempo              0x4               build/default/production/main.o
+Rx                  0x1               build/default/production/main.o
 trueRms             0x4               build/default/production/main.o
 data                0x3               build/default/production/main.o
 duty                0x4               build/default/production/main.o
@@ -63,12 +64,6 @@ Discarded input sections
 
  .data          0x0000000000000000        0x0 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/ATmega_DFP/2.3.126/xc8/avr/lib/avr5/memx-const/crtatmega328p.o
  .bss           0x0000000000000000        0x0 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/ATmega_DFP/2.3.126/xc8/avr/lib/avr5/memx-const/crtatmega328p.o
- .text          0x0000000000000000        0x0 build/default/production/main.o
- .data          0x0000000000000000        0x0 build/default/production/main.o
- .bss           0x0000000000000000        0x0 build/default/production/main.o
- .bss.bandera   0x0000000000000000        0x1 build/default/production/main.o
- .bss.contador  0x0000000000000000        0x2 build/default/production/main.o
- .data.i        0x0000000000000000        0x2 build/default/production/main.o
  .text          0x0000000000000000        0x0 build/default/production/libs/ADC.o
  .data          0x0000000000000000        0x0 build/default/production/libs/ADC.o
  .bss           0x0000000000000000        0x0 build/default/production/libs/ADC.o
@@ -95,6 +90,17 @@ Discarded input sections
  .debug_str     0x0000000000000000        0x0 build/default/production/libs/WatchDog.o
  .comment       0x0000000000000000       0x30 build/default/production/libs/WatchDog.o
  .debug_frame   0x0000000000000000       0x34 build/default/production/libs/WatchDog.o
+ .text          0x0000000000000000        0x0 build/default/production/main.o
+ .data          0x0000000000000000        0x0 build/default/production/main.o
+ .bss           0x0000000000000000        0x0 build/default/production/main.o
+ .bss.bandera   0x0000000000000000        0x1 build/default/production/main.o
+ .bss.contador  0x0000000000000000        0x2 build/default/production/main.o
+ .data.i        0x0000000000000000        0x2 build/default/production/main.o
+ .text          0x0000000000000000        0x0 build/default/production/MAX7219SPI.o
+ .data          0x0000000000000000        0x0 build/default/production/MAX7219SPI.o
+ .bss           0x0000000000000000        0x0 build/default/production/MAX7219SPI.o
+ .text.SPI_init
+                0x0000000000000000        0xe build/default/production/MAX7219SPI.o
  .text          0x0000000000000000        0x0 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(addsf3.o)
  .data          0x0000000000000000        0x0 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(addsf3.o)
  .bss           0x0000000000000000        0x0 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(addsf3.o)
@@ -290,11 +296,12 @@ Linker script and memory map
 Address of section .data set to 0x800100
 LOAD C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/ATmega_DFP/2.3.126/xc8/avr/lib/avr5/memx-const/crtatmega328p.o
                 0x0000000000000001                __MPLAB_BUILD = 0x1
-LOAD build/default/production/main.o
 LOAD build/default/production/libs/ADC.o
 LOAD build/default/production/libs/PCINT.o
 LOAD build/default/production/libs/USARTAtmega328P.o
 LOAD build/default/production/libs/WatchDog.o
+LOAD build/default/production/main.o
+LOAD build/default/production/MAX7219SPI.o
 START GROUP
 LOAD c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a
 END GROUP
@@ -414,6 +421,7 @@ END GROUP
  *(.dinit)
  .dinit         0x0000000000000068       0x18 data_init
                 0x0000000000000080                . = ALIGN (0x2)
+ *fill*         0x0000000000000080        0x0 
                 0x0000000000000080                __trampolines_start = .
  *(.trampolines)
  .trampolines   0x0000000000000080        0x0 linker stubs
@@ -496,25 +504,26 @@ END GROUP
                 0x0000000000800100                _edata = .
                 [!provide]                        PROVIDE (__data_end, .)
 
-.bss            0x0000000000800100       0x11
+.bss            0x0000000000800100       0x12
                 [!provide]                        PROVIDE (__bss_start, .)
  *(COMMON)
- COMMON         0x0000000000800100       0x11 build/default/production/main.o
+ COMMON         0x0000000000800100       0x12 build/default/production/main.o
                 0x0000000000800100                _char_dimmer
                 0x0000000000800101                tiempo
-                0x0000000000800105                trueRms
-                0x0000000000800109                data
-                0x000000000080010c                duty
-                0x0000000000800110                Tx
+                0x0000000000800105                Rx
+                0x0000000000800106                trueRms
+                0x000000000080010a                data
+                0x000000000080010d                duty
+                0x0000000000800111                Tx
                 [!provide]                        PROVIDE (__bss_end, .)
                 0x00000000000000d4                __data_load_start = LOADADDR (.data)
                 0x00000000000000d4                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0000000000800111        0x0
+.noinit         0x0000000000800112        0x0
                 [!provide]                        PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                        PROVIDE (__noinit_end, .)
-                0x0000000000800111                _end = .
+                0x0000000000800112                _end = .
 
 .eeprom         0x0000000000810000        0x0
  *(.eeprom*)
@@ -555,11 +564,12 @@ END GROUP
 
 .comment        0x0000000000000000       0x2f
  *(.comment)
- .comment       0x0000000000000000       0x2f build/default/production/main.o
+ .comment       0x0000000000000000       0x2f build/default/production/libs/ADC.o
                                          0x30 (size before relaxing)
- .comment       0x000000000000002f       0x30 build/default/production/libs/ADC.o
  .comment       0x000000000000002f       0x30 build/default/production/libs/PCINT.o
  .comment       0x000000000000002f       0x30 build/default/production/libs/USARTAtmega328P.o
+ .comment       0x000000000000002f       0x30 build/default/production/main.o
+ .comment       0x000000000000002f       0x30 build/default/production/MAX7219SPI.o
 
 .stack.descriptors.hdr
                 0x0000000000000000      0x142
@@ -625,63 +635,71 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x0000000000000000       0xa8
+.debug_aranges  0x0000000000000000       0xf0
  *(.debug_aranges)
  .debug_aranges
-                0x0000000000000000       0x30 build/default/production/main.o
+                0x0000000000000000       0x28 build/default/production/libs/ADC.o
  .debug_aranges
-                0x0000000000000030       0x28 build/default/production/libs/ADC.o
+                0x0000000000000028       0x20 build/default/production/libs/PCINT.o
  .debug_aranges
-                0x0000000000000058       0x20 build/default/production/libs/PCINT.o
+                0x0000000000000048       0x30 build/default/production/libs/USARTAtmega328P.o
  .debug_aranges
-                0x0000000000000078       0x30 build/default/production/libs/USARTAtmega328P.o
+                0x0000000000000078       0x38 build/default/production/main.o
+ .debug_aranges
+                0x00000000000000b0       0x40 build/default/production/MAX7219SPI.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x0000000000000000     0x1517
+.debug_info     0x0000000000000000     0x1a40
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x0000000000000000      0x5f4 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/ATmega_DFP/2.3.126/xc8/avr/lib/avr5/memx-const/crtatmega328p.o
- .debug_info    0x00000000000005f4      0x6dd build/default/production/main.o
- .debug_info    0x0000000000000cd1      0x33e build/default/production/libs/ADC.o
- .debug_info    0x000000000000100f      0x24e build/default/production/libs/PCINT.o
- .debug_info    0x000000000000125d      0x2ba build/default/production/libs/USARTAtmega328P.o
+ .debug_info    0x00000000000005f4      0x33e build/default/production/libs/ADC.o
+ .debug_info    0x0000000000000932      0x24e build/default/production/libs/PCINT.o
+ .debug_info    0x0000000000000b80      0x2ba build/default/production/libs/USARTAtmega328P.o
+ .debug_info    0x0000000000000e3a      0x7f8 build/default/production/main.o
+ .debug_info    0x0000000000001632      0x40e build/default/production/MAX7219SPI.o
 
-.debug_abbrev   0x0000000000000000      0x8c2
+.debug_abbrev   0x0000000000000000      0x9ed
  *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000      0x5a2 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/ATmega_DFP/2.3.126/xc8/avr/lib/avr5/memx-const/crtatmega328p.o
- .debug_abbrev  0x00000000000005a2      0x173 build/default/production/main.o
- .debug_abbrev  0x0000000000000715       0xd3 build/default/production/libs/ADC.o
- .debug_abbrev  0x00000000000007e8       0x44 build/default/production/libs/PCINT.o
- .debug_abbrev  0x000000000000082c       0x96 build/default/production/libs/USARTAtmega328P.o
+ .debug_abbrev  0x00000000000005a2       0xd3 build/default/production/libs/ADC.o
+ .debug_abbrev  0x0000000000000675       0x44 build/default/production/libs/PCINT.o
+ .debug_abbrev  0x00000000000006b9       0x96 build/default/production/libs/USARTAtmega328P.o
+ .debug_abbrev  0x000000000000074f      0x1b4 build/default/production/main.o
+ .debug_abbrev  0x0000000000000903       0xea build/default/production/MAX7219SPI.o
 
-.debug_line     0x0000000000000000      0x731
+.debug_line     0x0000000000000000      0x8f6
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x0000000000000000      0x137 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/ATmega_DFP/2.3.126/xc8/avr/lib/avr5/memx-const/crtatmega328p.o
- .debug_line    0x0000000000000137      0x348 build/default/production/main.o
- .debug_line    0x000000000000047f      0x126 build/default/production/libs/ADC.o
- .debug_line    0x00000000000005a5       0x99 build/default/production/libs/PCINT.o
- .debug_line    0x000000000000063e       0xf3 build/default/production/libs/USARTAtmega328P.o
+ .debug_line    0x0000000000000137      0x126 build/default/production/libs/ADC.o
+ .debug_line    0x000000000000025d       0x99 build/default/production/libs/PCINT.o
+ .debug_line    0x00000000000002f6       0xf3 build/default/production/libs/USARTAtmega328P.o
+ .debug_line    0x00000000000003e9      0x38a build/default/production/main.o
+ .debug_line    0x0000000000000773      0x183 build/default/production/MAX7219SPI.o
 
-.debug_frame    0x0000000000000000      0x164
+.debug_frame    0x0000000000000000      0x260
  *(.debug_frame)
- .debug_frame   0x0000000000000000       0xc8 build/default/production/main.o
- .debug_frame   0x00000000000000c8       0x34 build/default/production/libs/ADC.o
- .debug_frame   0x00000000000000fc       0x24 build/default/production/libs/PCINT.o
- .debug_frame   0x0000000000000120       0x44 build/default/production/libs/USARTAtmega328P.o
+ .debug_frame   0x0000000000000000       0x34 build/default/production/libs/ADC.o
+ .debug_frame   0x0000000000000034       0x24 build/default/production/libs/PCINT.o
+ .debug_frame   0x0000000000000058       0x44 build/default/production/libs/USARTAtmega328P.o
+ .debug_frame   0x000000000000009c      0x120 build/default/production/main.o
+ .debug_frame   0x00000000000001bc       0xa4 build/default/production/MAX7219SPI.o
 
-.debug_str      0x0000000000000000      0x24f
+.debug_str      0x0000000000000000      0x277
  *(.debug_str)
  .debug_str     0x0000000000000000      0x208 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/ATmega_DFP/2.3.126/xc8/avr/lib/avr5/memx-const/crtatmega328p.o
- .debug_str     0x0000000000000208       0x47 build/default/production/main.o
- .debug_str     0x000000000000024f        0x0 build/default/production/libs/ADC.o
- .debug_str     0x000000000000024f        0x0 build/default/production/libs/PCINT.o
- .debug_str     0x000000000000024f        0x0 build/default/production/libs/USARTAtmega328P.o
+ .debug_str     0x0000000000000208        0x0 build/default/production/libs/ADC.o
+ .debug_str     0x0000000000000208        0x0 build/default/production/libs/PCINT.o
+ .debug_str     0x0000000000000208        0x0 build/default/production/libs/USARTAtmega328P.o
+ .debug_str     0x0000000000000208       0x6f build/default/production/main.o
+ .debug_str     0x0000000000000277        0x0 build/default/production/MAX7219SPI.o
 
-.debug_loc      0x0000000000000000      0x24c
+.debug_loc      0x0000000000000000      0x368
  *(.debug_loc)
- .debug_loc     0x0000000000000000      0x1e1 build/default/production/main.o
- .debug_loc     0x00000000000001e1       0x6b build/default/production/libs/ADC.o
+ .debug_loc     0x0000000000000000       0x6b build/default/production/libs/ADC.o
+ .debug_loc     0x000000000000006b      0x227 build/default/production/main.o
+ .debug_loc     0x0000000000000292       0xd6 build/default/production/MAX7219SPI.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -701,16 +719,17 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x0000000000000000       0x98
+.debug_ranges   0x0000000000000000       0xd0
  *(.debug_ranges)
- .debug_ranges  0x0000000000000000       0x50 build/default/production/main.o
- .debug_ranges  0x0000000000000050       0x18 build/default/production/libs/ADC.o
- .debug_ranges  0x0000000000000068       0x10 build/default/production/libs/PCINT.o
- .debug_ranges  0x0000000000000078       0x20 build/default/production/libs/USARTAtmega328P.o
+ .debug_ranges  0x0000000000000000       0x18 build/default/production/libs/ADC.o
+ .debug_ranges  0x0000000000000018       0x10 build/default/production/libs/PCINT.o
+ .debug_ranges  0x0000000000000028       0x20 build/default/production/libs/USARTAtmega328P.o
+ .debug_ranges  0x0000000000000048       0x58 build/default/production/main.o
+ .debug_ranges  0x00000000000000a0       0x30 build/default/production/MAX7219SPI.o
 
 .debug_macro
  *(.debug_macro)
-OUTPUT(dist/default/production/Atmega328P-AC_AC-DimmerTrailingEdge.X.production.elf elf32-avr)
+OUTPUT(dist/default/production/Atmega328P-AC-AC-DimmerTrailingEdge.production.elf elf32-avr)
 LOAD linker stubs
 LOAD data_init
 
@@ -719,262 +738,306 @@ LOAD data_init
  .note.gnu.avr.deviceinfo
                 0x0000000000000000       0x40 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/ATmega_DFP/2.3.126/xc8/avr/lib/avr5/memx-const/crtatmega328p.o
 
-.bss.range      0x0000000000800111        0x4
- .bss.range     0x0000000000800111        0x4 build/default/production/main.o
-                0x0000000000800111                range
+.bss.range      0x0000000000800112        0x4
+ .bss.range     0x0000000000800112        0x4 build/default/production/main.o
+                0x0000000000800112                range
 
 .bss.pulseWidth
-                0x0000000000800119        0x2
+                0x000000000080011a        0x2
  .bss.pulseWidth
-                0x0000000000800119        0x2 build/default/production/main.o
-                0x0000000000800119                pulseWidth
+                0x000000000080011a        0x2 build/default/production/main.o
+                0x000000000080011a                pulseWidth
 
-.bss.fallTime   0x000000000080011b        0x2
- .bss.fallTime  0x000000000080011b        0x2 build/default/production/main.o
-                0x000000000080011b                fallTime
+.bss.fallTime   0x000000000080011c        0x2
+ .bss.fallTime  0x000000000080011c        0x2 build/default/production/main.o
+                0x000000000080011c                fallTime
 
-.bss.riseTime   0x000000000080011d        0x2
- .bss.riseTime  0x000000000080011d        0x2 build/default/production/main.o
-                0x000000000080011d                riseTime
+.bss.riseTime   0x000000000080011e        0x2
+ .bss.riseTime  0x000000000080011e        0x2 build/default/production/main.o
+                0x000000000080011e                riseTime
 
-.bss._temp2     0x000000000080011f        0x2
- .bss._temp2    0x000000000080011f        0x2 build/default/production/main.o
-                0x000000000080011f                _temp2
+.bss.encender   0x0000000000800128        0x1
+ .bss.encender  0x0000000000800128        0x1 build/default/production/main.o
+                0x0000000000800128                encender
 
-.bss._temp      0x0000000000800121        0x2
- .bss._temp     0x0000000000800121        0x2 build/default/production/main.o
-                0x0000000000800121                _temp
+.bss._temp2     0x0000000000800120        0x2
+ .bss._temp2    0x0000000000800120        0x2 build/default/production/main.o
+                0x0000000000800120                _temp2
 
-.text.main      0x00000000000000d4      0x2d0
- .text.main     0x00000000000000d4      0x2d0 build/default/production/main.o
+.bss._temp      0x0000000000800122        0x2
+ .bss._temp     0x0000000000800122        0x2 build/default/production/main.o
+                0x0000000000800122                _temp
+
+.bss.dimmer     0x0000000000800116        0x4
+ .bss.dimmer    0x0000000000800116        0x4 build/default/production/main.o
+                0x0000000000800116                dimmer
+
+.text.main      0x00000000000000d4      0x328
+ .text.main     0x00000000000000d4      0x328 build/default/production/main.o
                 0x00000000000000d4                main
 
 .text.__vector_1
-                0x00000000000003a4      0x224
+                0x00000000000003fc      0x1c4
  .text.__vector_1
-                0x00000000000003a4      0x224 build/default/production/main.o
-                0x00000000000003a4                __vector_1
+                0x00000000000003fc      0x1c4 build/default/production/main.o
+                0x00000000000003fc                __vector_1
+
+.text.MAX7219_displayNumber
+                0x00000000000005c0       0xe4
+ .text.MAX7219_displayNumber
+                0x00000000000005c0       0xe4 build/default/production/MAX7219SPI.o
+                0x00000000000005c0                MAX7219_displayNumber
 
 .text.avrlibc.fplib
-                0x00000000000005c8       0xde
+                0x00000000000006a4       0xde
  .text.avrlibc.fplib
-                0x00000000000005c8       0xde c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(divsf3x.o)
-                0x00000000000005c8                __divsf3x
-                0x00000000000005f0                __divsf3_pse
+                0x00000000000006a4       0xde c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(divsf3x.o)
+                0x00000000000006a4                __divsf3x
+                0x00000000000006cc                __divsf3_pse
 
 .text.avrlibc.fplib
-                0x00000000000006a6       0xd4
+                0x0000000000000782       0xd4
  .text.avrlibc.fplib
-                0x00000000000006a6       0xd4 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(mulsf3x.o)
-                0x00000000000006a6                __mulsf3x
-                0x00000000000006cc                __mulsf3_pse
+                0x0000000000000782       0xd4 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(mulsf3x.o)
+                0x0000000000000782                __mulsf3x
+                0x00000000000007a8                __mulsf3_pse
 
 .text.avrlibc.fplib
-                0x000000000000077a       0xce
+                0x0000000000000856       0xce
  .text.avrlibc.fplib
-                0x000000000000077a       0xce c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(addsf3x.o)
-                0x000000000000077a                __addsf3x
+                0x0000000000000856       0xce c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(addsf3x.o)
+                0x0000000000000856                __addsf3x
 
 .text.avrlibc.fplib
-                0x0000000000000848       0x7a
+                0x0000000000000924       0x7a
  .text.avrlibc.fplib
-                0x0000000000000848       0x7a c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(floatsisf.o)
-                0x0000000000000848                __floatunsisf
-                0x000000000000084c                __floatsisf
+                0x0000000000000924       0x7a c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(floatsisf.o)
+                0x0000000000000924                __floatunsisf
+                0x0000000000000928                __floatsisf
 
 .text.avrlibc.fplib
-                0x00000000000008c2       0x5e
+                0x000000000000099e       0x5e
  .text.avrlibc.fplib
-                0x00000000000008c2       0x5e c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fixunssfsi.o)
-                0x00000000000008c2                __fixunssfsi
+                0x000000000000099e       0x5e c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fixunssfsi.o)
+                0x000000000000099e                __fixunssfsi
+
+.text.__vector_18
+                0x00000000000009fc       0x48
+ .text.__vector_18
+                0x00000000000009fc       0x48 build/default/production/main.o
+                0x00000000000009fc                __vector_18
 
 .text.avrlibc.fplib
-                0x0000000000000920       0x48
+                0x0000000000000a44       0x48
  .text.avrlibc.fplib
-                0x0000000000000920       0x48 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_cmp.o)
-                0x0000000000000920                __fp_cmp
+                0x0000000000000a44       0x48 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_cmp.o)
+                0x0000000000000a44                __fp_cmp
 
 .text.ADC_GetData
-                0x0000000000000968       0x44
+                0x0000000000000a8c       0x44
  .text.ADC_GetData
-                0x0000000000000968       0x44 build/default/production/libs/ADC.o
-                0x0000000000000968                ADC_GetData
+                0x0000000000000a8c       0x44 build/default/production/libs/ADC.o
+                0x0000000000000a8c                ADC_GetData
 
 .text.avrlibc.fplib
-                0x00000000000009ac       0x44
+                0x0000000000000ad0       0x44
  .text.avrlibc.fplib
-                0x00000000000009ac       0x44 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_split3.o)
-                0x00000000000009ac                __fp_split3
-                0x00000000000009bc                __fp_splitA
+                0x0000000000000ad0       0x44 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_split3.o)
+                0x0000000000000ad0                __fp_split3
+                0x0000000000000ae0                __fp_splitA
 
 .text.libgcc.div
-                0x00000000000009f0       0x44
+                0x0000000000000b14       0x44
  .text.libgcc.div
-                0x00000000000009f0       0x44 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/avr5/memx-const\libgcc.a(_udivmodsi4.o)
-                0x00000000000009f0                __udivmodsi4
+                0x0000000000000b14       0x44 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/avr5/memx-const\libgcc.a(_udivmodsi4.o)
+                0x0000000000000b14                __udivmodsi4
 
 .text.__vector_10
-                0x0000000000000a34       0x3a
+                0x0000000000000b58       0x3a
  .text.__vector_10
-                0x0000000000000a34       0x3a build/default/production/main.o
-                0x0000000000000a34                __vector_10
+                0x0000000000000b58       0x3a build/default/production/main.o
+                0x0000000000000b58                __vector_10
 
 .text.libgcc.div
-                0x0000000000000a6e       0x2e
+                0x0000000000000b92       0x2e
  .text.libgcc.div
-                0x0000000000000a6e       0x2e c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/avr5/memx-const\libgcc.a(_divmodsi4.o)
-                0x0000000000000a6e                __divmodsi4
+                0x0000000000000b92       0x2e c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/avr5/memx-const\libgcc.a(_divmodsi4.o)
+                0x0000000000000b92                __divmodsi4
 
 .text.avrlibc.fplib
-                0x0000000000000a9c       0x22
+                0x0000000000000bc0       0x22
  .text.avrlibc.fplib
-                0x0000000000000a9c       0x22 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_round.o)
-                0x0000000000000a9c                __fp_round
+                0x0000000000000bc0       0x22 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_round.o)
+                0x0000000000000bc0                __fp_round
 
-.text.ADC_init  0x0000000000000abe       0x1a
+.text.ADC_init  0x0000000000000be2       0x1a
  .text.ADC_init
-                0x0000000000000abe       0x1a build/default/production/libs/ADC.o
-                0x0000000000000abe                ADC_init
+                0x0000000000000be2       0x1a build/default/production/libs/ADC.o
+                0x0000000000000be2                ADC_init
 
 .text.PCINT_init
-                0x0000000000000ad8       0x18
+                0x0000000000000bfc       0x18
  .text.PCINT_init
-                0x0000000000000ad8       0x18 build/default/production/libs/PCINT.o
-                0x0000000000000ad8                PCINT_init
+                0x0000000000000bfc       0x18 build/default/production/libs/PCINT.o
+                0x0000000000000bfc                PCINT_init
 
 .text.USART_init
-                0x0000000000000af0       0x18
+                0x0000000000000c14       0x18
  .text.USART_init
-                0x0000000000000af0       0x18 build/default/production/libs/USARTAtmega328P.o
-                0x0000000000000af0                USART_init
+                0x0000000000000c14       0x18 build/default/production/libs/USARTAtmega328P.o
+                0x0000000000000c14                USART_init
+
+.text.MAX7219_writeData
+                0x0000000000000c2c       0x16
+ .text.MAX7219_writeData
+                0x0000000000000c2c       0x16 build/default/production/MAX7219SPI.o
+                0x0000000000000c2c                MAX7219_writeData
+
+.text.MAX7219_clearDisplay
+                0x0000000000000c42       0x16
+ .text.MAX7219_clearDisplay
+                0x0000000000000c42       0x16 build/default/production/MAX7219SPI.o
+                0x0000000000000c42                MAX7219_clearDisplay
 
 .text.USART_SetData
-                0x0000000000000b08       0x10
+                0x0000000000000c58       0x10
  .text.USART_SetData
-                0x0000000000000b08       0x10 build/default/production/libs/USARTAtmega328P.o
-                0x0000000000000b08                USART_SetData
+                0x0000000000000c58       0x10 build/default/production/libs/USARTAtmega328P.o
+                0x0000000000000c58                USART_SetData
 
 .text.USART_GetData
-                0x0000000000000b18       0x10
+                0x0000000000000c68       0x10
  .text.USART_GetData
-                0x0000000000000b18       0x10 build/default/production/libs/USARTAtmega328P.o
-                0x0000000000000b18                USART_GetData
+                0x0000000000000c68       0x10 build/default/production/libs/USARTAtmega328P.o
+                0x0000000000000c68                USART_GetData
 
 .text.libgcc.div
-                0x0000000000000b28       0x10
+                0x0000000000000c78       0x10
  .text.libgcc.div
-                0x0000000000000b28       0x10 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/avr5/memx-const\libgcc.a(_negsi2.o)
-                0x0000000000000b28                __negsi2
+                0x0000000000000c78       0x10 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/avr5/memx-const\libgcc.a(_negsi2.o)
+                0x0000000000000c78                __negsi2
 
 .text.avrlibc.fplib
-                0x0000000000000b38        0xe
+                0x0000000000000c88        0xe
  .text.avrlibc.fplib
-                0x0000000000000b38        0xe c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(addsf3.o)
-                0x0000000000000b38                __subsf3
-                0x0000000000000b3a                __addsf3
+                0x0000000000000c88        0xe c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(addsf3.o)
+                0x0000000000000c88                __subsf3
+                0x0000000000000c8a                __addsf3
 
 .text.avrlibc.fplib
-                0x0000000000000b46        0xe
+                0x0000000000000c96        0xe
  .text.avrlibc.fplib
-                0x0000000000000b46        0xe c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fixsfsi.o)
-                0x0000000000000b46                __fixsfsi
+                0x0000000000000c96        0xe c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fixsfsi.o)
+                0x0000000000000c96                __fixsfsi
 
 .text.avrlibc.fplib
-                0x0000000000000b54        0xe
+                0x0000000000000ca4        0xe
  .text.avrlibc.fplib
-                0x0000000000000b54        0xe c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_pscA.o)
-                0x0000000000000b54                __fp_pscA
+                0x0000000000000ca4        0xe c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_pscA.o)
+                0x0000000000000ca4                __fp_pscA
 
 .text.avrlibc.fplib
-                0x0000000000000b62        0xe
+                0x0000000000000cb2        0xe
  .text.avrlibc.fplib
-                0x0000000000000b62        0xe c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_pscB.o)
-                0x0000000000000b62                __fp_pscB
+                0x0000000000000cb2        0xe c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_pscB.o)
+                0x0000000000000cb2                __fp_pscB
 
 .text.avrlibc.fplib
-                0x0000000000000b70        0xe
+                0x0000000000000cc0        0xe
  .text.avrlibc.fplib
-                0x0000000000000b70        0xe c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_zero.o)
-                0x0000000000000b70                __fp_zero
-                0x0000000000000b72                __fp_szero
+                0x0000000000000cc0        0xe c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_zero.o)
+                0x0000000000000cc0                __fp_zero
+                0x0000000000000cc2                __fp_szero
 
 .text.avrlibc.fplib
-                0x0000000000000b7e        0xc
+                0x0000000000000cce        0xc
  .text.avrlibc.fplib
-                0x0000000000000b7e        0xc c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_inf.o)
-                0x0000000000000b7e                __fp_inf
+                0x0000000000000cce        0xc c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_inf.o)
+                0x0000000000000cce                __fp_inf
+
+.text.spiSendByte
+                0x0000000000000cda        0xa
+ .text.spiSendByte
+                0x0000000000000cda        0xa build/default/production/MAX7219SPI.o
+                0x0000000000000cda                spiSendByte
 
 .text.avrlibc.fplib
-                0x0000000000000b8a        0xa
+                0x0000000000000ce4        0xa
  .text.avrlibc.fplib
-                0x0000000000000b8a        0xa c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(cmpsf2.o)
-                0x0000000000000b8a                __nesf2
-                0x0000000000000b8a                __eqsf2
-                0x0000000000000b8a                __cmpsf2
-                0x0000000000000b8a                __ltsf2
-                0x0000000000000b8a                __lesf2
+                0x0000000000000ce4        0xa c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(cmpsf2.o)
+                0x0000000000000ce4                __nesf2
+                0x0000000000000ce4                __eqsf2
+                0x0000000000000ce4                __cmpsf2
+                0x0000000000000ce4                __ltsf2
+                0x0000000000000ce4                __lesf2
 
 .text.avrlibc.fplib
-                0x0000000000000b94        0xa
+                0x0000000000000cee        0xa
  .text.avrlibc.fplib
-                0x0000000000000b94        0xa c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(gesf2.o)
-                0x0000000000000b94                __gesf2
-                0x0000000000000b94                __gtsf2
+                0x0000000000000cee        0xa c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(gesf2.o)
+                0x0000000000000cee                __gesf2
+                0x0000000000000cee                __gtsf2
 
 .text.avrlibc.fplib
-                0x0000000000000b9e        0x8
+                0x0000000000000cf8        0x8
  .text.avrlibc.fplib
-                0x0000000000000b9e        0x8 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(divsf3.o)
-                0x0000000000000b9e                __divsf3
+                0x0000000000000cf8        0x8 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(divsf3.o)
+                0x0000000000000cf8                __divsf3
 
 .text.avrlibc.fplib
-                0x0000000000000ba6        0x8
+                0x0000000000000d00        0x8
  .text.avrlibc.fplib
-                0x0000000000000ba6        0x8 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(mulsf3.o)
-                0x0000000000000ba6                __mulsf3
+                0x0000000000000d00        0x8 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(mulsf3.o)
+                0x0000000000000d00                __mulsf3
 
 .text.avrlibc.fplib
-                0x0000000000000bae        0x6
+                0x0000000000000d08        0x6
  .text.avrlibc.fplib
-                0x0000000000000bae        0x6 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_nan.o)
-                0x0000000000000bae                __fp_nan
+                0x0000000000000d08        0x6 c:/program files/microchip/xc8/v2.32/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const\libm.a(fp_nan.o)
+                0x0000000000000d08                __fp_nan
 
-.text           0x0000000000000bb4        0x4
- .text          0x0000000000000bb4        0x4 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/ATmega_DFP/2.3.126/xc8/avr/lib/avr5/memx-const/crtatmega328p.o
-                0x0000000000000bb4                __vector_22
-                0x0000000000000bb4                __vector_24
-                0x0000000000000bb4                __vector_12
-                0x0000000000000bb4                __bad_interrupt
-                0x0000000000000bb4                __vector_6
-                0x0000000000000bb4                __vector_3
-                0x0000000000000bb4                __vector_23
-                0x0000000000000bb4                __vector_25
-                0x0000000000000bb4                __vector_11
-                0x0000000000000bb4                __vector_13
-                0x0000000000000bb4                __vector_17
-                0x0000000000000bb4                __vector_19
-                0x0000000000000bb4                __vector_7
-                0x0000000000000bb4                __vector_5
-                0x0000000000000bb4                __vector_4
-                0x0000000000000bb4                __vector_9
-                0x0000000000000bb4                __vector_2
-                0x0000000000000bb4                __vector_21
-                0x0000000000000bb4                __vector_15
-                0x0000000000000bb4                __vector_8
-                0x0000000000000bb4                __vector_14
-                0x0000000000000bb4                __vector_16
-                0x0000000000000bb4                __vector_18
-                0x0000000000000bb4                __vector_20
+.text           0x0000000000000d0e        0x4
+ .text          0x0000000000000d0e        0x4 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/ATmega_DFP/2.3.126/xc8/avr/lib/avr5/memx-const/crtatmega328p.o
+                0x0000000000000d0e                __vector_22
+                0x0000000000000d0e                __vector_24
+                0x0000000000000d0e                __vector_12
+                0x0000000000000d0e                __bad_interrupt
+                0x0000000000000d0e                __vector_6
+                0x0000000000000d0e                __vector_3
+                0x0000000000000d0e                __vector_23
+                0x0000000000000d0e                __vector_25
+                0x0000000000000d0e                __vector_11
+                0x0000000000000d0e                __vector_13
+                0x0000000000000d0e                __vector_17
+                0x0000000000000d0e                __vector_19
+                0x0000000000000d0e                __vector_7
+                0x0000000000000d0e                __vector_5
+                0x0000000000000d0e                __vector_4
+                0x0000000000000d0e                __vector_9
+                0x0000000000000d0e                __vector_2
+                0x0000000000000d0e                __vector_21
+                0x0000000000000d0e                __vector_15
+                0x0000000000000d0e                __vector_8
+                0x0000000000000d0e                __vector_14
+                0x0000000000000d0e                __vector_16
+                0x0000000000000d0e                __vector_20
 
-.data.dimmer    0x0000000000800115        0x4 load address 0x0000000000000bb8
- .data.dimmer   0x0000000000800115        0x4 build/default/production/main.o
-                0x0000000000800115                dimmer
+.data.number    0x0000000000800124        0x2 load address 0x0000000000000d12
+ .data.number   0x0000000000800124        0x2 build/default/production/main.o
+                0x0000000000800124                number
 
-.data.local     0x0000000000800123        0x1 load address 0x0000000000000bbc
- .data.local    0x0000000000800123        0x1 build/default/production/main.o
-                0x0000000000800123                local
+.data.digitsInUsed
+                0x0000000000800126        0x1 load address 0x0000000000000d14
+ .data.digitsInUsed
+                0x0000000000800126        0x1 build/default/production/main.o
+                0x0000000000800126                digitsInUsed
 
-.data.encender  0x0000000000800124        0x1 load address 0x0000000000000bbd
- .data.encender
-                0x0000000000800124        0x1 build/default/production/main.o
-                0x0000000000800124                encender
+.data.local     0x0000000000800127        0x1 load address 0x0000000000000d15
+ .data.local    0x0000000000800127        0x1 build/default/production/main.o
+                0x0000000000800127                local
+
+.data.digitsInUse
+                0x0000000000800129        0x1 load address 0x0000000000000d16
+ .data.digitsInUse
+                0x0000000000800129        0x1 build/default/production/MAX7219SPI.o
+                0x0000000000800129                digitsInUse

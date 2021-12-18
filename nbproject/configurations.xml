@@ -21,6 +21,8 @@
         <itemPath>libs/PCINT.h</itemPath>
         <itemPath>libs/USARTAtmega328P.h</itemPath>
         <itemPath>libs/WatchDog.h</itemPath>
+        <itemPath>MAX7219SPI.h</itemPath>
+        <itemPath>MAX7219SPI.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
       <itemPath>Makefile</itemPath>
